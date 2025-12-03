@@ -1,0 +1,464 @@
+{
+  "users": [
+    {
+      "id": "1xx",
+      "login": "admin",
+      "password": "123456",
+      "email": "admin@example.com",
+      "registered_at": "2024-01-01T00:00:00.000Z",
+      "role_id": 1
+    },
+    {
+      "id": "2",
+      "login": "customer",
+      "password": "customer123",
+      "email": "customer@example.com",
+      "registered_at": "2024-01-02T00:00:00.000Z",
+      "role_id": 2
+    },
+    {
+      "id": "caa4",
+      "login": "fedya",
+      "email": "fedya@gmail.com",
+      "password": "123456",
+      "registered_at": "02.10.2025",
+      "role_id": 3
+    },
+    {
+      "id": "6665",
+      "login": "Natya",
+      "email": "natya@gmail.com",
+      "password": "123456",
+      "registered_at": "08.10.2025",
+      "role_id": 3
+    },
+    {
+      "id": "3a68",
+      "login": "Andrey",
+      "email": "andrey@gmail.com",
+      "password": "123456",
+      "registered_at": "09.10.2025",
+      "role_id": 2
+    }
+  ],
+  "roles": [
+    {
+      "id": "1",
+      "name": "admin"
+    },
+    {
+      "id": "2",
+      "name": "customer"
+    },
+    {
+      "id": "3",
+      "name": "user"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Smartphones",
+      "description": "Mobile phones"
+    },
+    {
+      "id": "2",
+      "name": "Laptops",
+      "description": "Portable computers"
+    },
+    {
+      "id": "3",
+      "name": "Headphones",
+      "description": "Audio devices"
+    },
+    {
+      "id": "4",
+      "name": "Charger",
+      "description": "Charging device"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "a39f",
+      "hash": "k2upjmpk",
+      "user": {
+        "id": "6665",
+        "login": "Natya",
+        "email": "natya@gmail.com",
+        "password": "123456",
+        "registered_at": "08.10.2025",
+        "role_id": 3
+      }
+    },
+    {
+      "id": "5e76",
+      "hash": "pul54zjc",
+      "user": {
+        "id": "6665",
+        "login": "Natya",
+        "email": "natya@gmail.com",
+        "password": "123456",
+        "registered_at": "08.10.2025",
+        "role_id": 3
+      }
+    },
+    {
+      "id": "9fb3",
+      "hash": "u6n9duym",
+      "user": {
+        "id": "6665",
+        "login": "Natya",
+        "email": "natya@gmail.com",
+        "password": "123456",
+        "registered_at": "08.10.2025",
+        "role_id": 3
+      }
+    },
+    {
+      "id": "1683",
+      "hash": "jp6ox0wx",
+      "user": {
+        "id": "6665",
+        "login": "Natya",
+        "email": "natya@gmail.com",
+        "password": "123456",
+        "registered_at": "08.10.2025",
+        "role_id": 3
+      }
+    },
+    {
+      "id": "3aff",
+      "hash": "ojdvmj5j",
+      "user": {
+        "id": "caa4",
+        "login": "fedya",
+        "email": "fedya@gmail.com",
+        "password": "123456",
+        "registered_at": "02.10.2025",
+        "role_id": 3
+      }
+    },
+    {
+      "id": "ee8e",
+      "hash": "yxozqbi3",
+      "user": {
+        "id": "caa4",
+        "login": "fedya",
+        "email": "fedya@gmail.com",
+        "password": "123456",
+        "registered_at": "02.10.2025",
+        "role_id": 3
+      }
+    },
+    {
+      "id": "33c4",
+      "hash": "qe50tv6b",
+      "user": {
+        "id": "6665",
+        "login": "Natya",
+        "email": "natya@gmail.com",
+        "password": "123456",
+        "registered_at": "08.10.2025",
+        "role_id": 3
+      }
+    },
+    {
+      "id": "359d",
+      "hash": "pk3elhd7",
+      "user": {
+        "id": "1xx",
+        "login": "admin",
+        "password": "123456",
+        "email": "admin@example.com",
+        "registered_at": "2024-01-01T00:00:00.000Z",
+        "role_id": 1
+      }
+    },
+    {
+      "id": "c54d",
+      "hash": "0zr34fah",
+      "user": {
+        "id": "1xx",
+        "login": "admin",
+        "password": "123456",
+        "email": "admin@example.com",
+        "registered_at": "2024-01-01T00:00:00.000Z",
+        "role_id": 1
+      }
+    }
+  ],
+  "cart": [
+    {
+      "id": "8746",
+      "user_id": "6665",
+      "items": [
+        {
+          "product_id": "00d8",
+          "price": 65,
+          "name": "USB-C Charger 35W",
+          "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "1a2b",
+      "user_id": "caa4",
+      "items": [
+        {
+          "product_id": "00c5",
+          "price": 900,
+          "name": "iPhone",
+          "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "80a9",
+      "user_id": "3a68",
+      "items": [
+        {
+          "product_id": "00d8",
+          "price": 65,
+          "name": "USB-C Charger 35W",
+          "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+          "quantity": 1
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "00c5",
+      "name": "iPhone",
+      "description": "Premium smartphone | Vector",
+      "long_description": "High-end Apple smartphone with best performance | Premium Vektor",
+      "price": 900,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 1,
+      "stock_quantity": 45,
+      "created_at": "2025-10-10T14:21:04.305Z"
+    },
+    {
+      "id": "00c6",
+      "name": "MacBook Air",
+      "description": "Lightweight laptop | Premium Vektor",
+      "long_description": "Powerful and thin laptop for work and entertainment | Premium Vektor",
+      "price": 1300,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 2,
+      "stock_quantity": 32,
+      "created_at": "2025-10-10T14:21:05.305Z"
+    },
+    {
+      "id": "00c7",
+      "name": "AirPods Pro",
+      "description": "Wireless earbuds | Premium Vektor",
+      "long_description": "Noise Cancelling earbuds with high quality sound | Premium Vektor",
+      "price": 300,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 3,
+      "stock_quantity": 70,
+      "created_at": "2025-10-10T14:21:06.305Z"
+    },
+    {
+      "id": "00c8",
+      "name": "Fast Charger",
+      "description": "USB-C fast charger | Premium Vektor",
+      "long_description": "High speed charging for all Apple devices | Premium Vektor",
+      "price": 50,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 4,
+      "stock_quantity": 150,
+      "created_at": "2025-10-10T14:21:07.305Z"
+    },
+    {
+      "id": "00c9",
+      "name": "iPhone SE",
+      "description": "Compact smartphone | Premium Vektor",
+      "long_description": "Small but powerful Apple smartphone | Premium Vektor",
+      "price": 500,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 1,
+      "stock_quantity": 58,
+      "created_at": "2025-10-10T14:21:08.305Z"
+    },
+    {
+      "id": "00ca",
+      "name": "MacBook Pro",
+      "description": "Professional laptop | Premium Vektor",
+      "long_description": "Perfect choice for developers and designers | Premium Vektor",
+      "price": 2100,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 2,
+      "stock_quantity": 24,
+      "created_at": "2025-10-10T14:21:09.305Z"
+    },
+    {
+      "id": "00cb",
+      "name": "Beats Studio Pro",
+      "description": "Over-ear headphones | Premium Vektor",
+      "long_description": "Noise cancelling headphones with deep sound | Premium Vektor",
+      "price": 400,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 3,
+      "stock_quantity": 62,
+      "created_at": "2025-10-10T14:21:10.305Z"
+    },
+    {
+      "id": "00cc",
+      "name": "Wireless Charger",
+      "description": "Qi wireless charger | Premium Vektor",
+      "long_description": "Fast and convenient charging pad | Premium Vektor",
+      "price": 70,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 4,
+      "stock_quantity": 90,
+      "created_at": "2025-10-10T14:21:11.305Z"
+    },
+    {
+      "id": "00cd",
+      "name": "iPhone 15 Pro",
+      "description": "Flagship smartphone | Premium Vektor",
+      "long_description": "Latest Apple smartphone with A17 Pro chip | Premium Vektor",
+      "price": 1500,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 1,
+      "stock_quantity": 37,
+      "created_at": "2025-10-10T14:21:12.305Z"
+    },
+    {
+      "id": "00ce",
+      "name": "Mac Mini",
+      "description": "Compact desktop | Premium Vektor",
+      "long_description": "Small but mighty Apple computer | Premium Vektor",
+      "price": 800,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 2,
+      "stock_quantity": 33,
+      "created_at": "2025-10-10T14:21:13.305Z"
+    },
+    {
+      "id": "00cf",
+      "name": "AirPods Max",
+      "description": "Premium headphones | Premium Vektor",
+      "long_description": "Over-ear headphones with spatial audio | Premium Vektor",
+      "price": 600,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 3,
+      "stock_quantity": 40,
+      "created_at": "2025-10-10T14:21:14.305Z"
+    },
+    {
+      "id": "00d0",
+      "name": "Car Charger",
+      "description": "Fast car charger | Premium Vektor",
+      "long_description": "Dual USB-C car charger for iPhone and iPad | Premium Vektor",
+      "price": 35,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 4,
+      "stock_quantity": 200,
+      "created_at": "2025-10-10T14:21:15.305Z"
+    },
+    {
+      "id": "00d1",
+      "name": "iPhone 14",
+      "description": "Modern smartphone | Premium Vektor",
+      "long_description": "Powerful iPhone with amazing camera | Premium Vektor",
+      "price": 1000,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 1,
+      "stock_quantity": 55,
+      "created_at": "2025-10-10T14:21:16.305Z"
+    },
+    {
+      "id": "00d2",
+      "name": "Mac Studio",
+      "description": "Desktop computer | Premium Vektor",
+      "long_description": "High-performance desktop for professionals | Premium Vektor",
+      "price": 2500,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 2,
+      "stock_quantity": 15,
+      "created_at": "2025-10-10T14:21:17.305Z"
+    },
+    {
+      "id": "00d3",
+      "name": "Beats Fit Pro",
+      "description": "Sport headphones | Premium Vektor",
+      "long_description": "Sweat resistant wireless earbuds | Premium Vektor",
+      "price": 250,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 3,
+      "stock_quantity": 75,
+      "created_at": "2025-10-10T14:21:18.305Z"
+    },
+    {
+      "id": "00d4",
+      "name": "MagSafe Charger",
+      "description": "Magnetic charger | Premium Vektor",
+      "long_description": "Perfect fit wireless charger for iPhone | Premium Vektor",
+      "price": 90,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 4,
+      "stock_quantity": 120,
+      "created_at": "2025-10-10T14:21:19.305Z"
+    },
+    {
+      "id": "00d5",
+      "name": "iPhone XR",
+      "description": "Affordable iPhone | Premium Vektor",
+      "long_description": "Reliable Apple smartphone with great value | Premium Vektor",
+      "price": 600,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 1,
+      "stock_quantity": 68,
+      "created_at": "2025-10-10T14:21:20.305Z"
+    },
+    {
+      "id": "00d6",
+      "name": "MacBook Air M3",
+      "description": "Laptop with M3 chip | Premium Vektor",
+      "long_description": "New generation Apple laptop | Premium Vektor",
+      "price": 1400,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 2,
+      "stock_quantity": 25,
+      "created_at": "2025-10-10T14:21:21.305Z"
+    },
+    {
+      "id": "00d7",
+      "name": "AirPods 3",
+      "description": "Wireless headphones | Premium Vektor",
+      "long_description": "Great sound and comfort | Premium Vektor",
+      "price": 180,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 3,
+      "stock_quantity": 88,
+      "created_at": "2025-10-10T14:21:22.305Z"
+    },
+    {
+      "id": "00d8",
+      "name": "USB-C Charger 35W",
+      "description": "Power adapter | Premium Vektor",
+      "long_description": "Dual port fast charger for iPhone and MacBook | Premium Vektor",
+      "price": 65,
+      "image_url": "https://img.freepik.com/vektoren-premium/gadgets-elektronisches-grosses-set_146957-836.jpg",
+      "category_id": 4,
+      "stock_quantity": 130,
+      "created_at": "2025-10-10T14:21:23.305Z"
+    },
+    {
+      "id": "641e",
+      "name": "New Product",
+      "description": "no",
+      "long_description": "no",
+      "price": 2,
+      "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvydXTQ1xhGGMHm1FpF37X_YPxrXRICoMMvw&s",
+      "category_id": 4,
+      "stock_quantity": 1,
+      "created_at": "2025-10-21T23:59:01.572Z"
+    }
+  ]
+}

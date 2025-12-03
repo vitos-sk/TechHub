@@ -1,0 +1,5 @@
+export * from './authorization/authorization'
+export * from './registaration/registration'
+export * from './main/main'
+export * from './cart/cart'
+export * from './admin-panel/admin-panel'
