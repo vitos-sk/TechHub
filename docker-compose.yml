@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: techhub_backend
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: techhub_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://5.129.251.89:5000

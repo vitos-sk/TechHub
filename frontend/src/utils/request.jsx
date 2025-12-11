@@ -1,7 +1,7 @@
 export function request(url, method, data) {
-  const apiUrl = url.startsWith("http://localhost:3002/api")
+  const apiUrl = url.startsWith("http://5.129.251.89:5000/api")
     ? url
-    : `http://localhost:3002/api${url}`;
+    : `http://5.129.251.89:5000/api${url}`;
 
   return fetch(apiUrl, {
     headers: {
