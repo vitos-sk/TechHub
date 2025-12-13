@@ -644,18 +644,10 @@ ports:
 
 ## 👨‍💻 Автор
 
-TechHub Development Team
+Vitalii Development Team
 
 ---
 
-## 🙏 Благодарности
-
-- React Team
-- Express.js Community
-- MongoDB Team
-- Docker Community
-
----
 
 **Версия:** 1.0.0  
 **Последнее обновление:** Декабрь 2025
