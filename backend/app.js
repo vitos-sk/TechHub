@@ -13,6 +13,8 @@ const allowedOrigins = [
   "http://127.0.0.1:5173",
   "http://localhost",
   "http://localhost:80",
+  "http://5.129.251.89",
+  "http://5.129.251.89:80",
 ];
 
 app.use(
@@ -33,15 +35,9 @@ app.use(
 );
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencater({ extended: true }));
 
 app.use(require("./routes/index"));
-
-app.use(express.static(path.resolve(__dirname, "../frontend/dist")));
-
-app.get(/^\/(?!api).*/, (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
-});
 
 mongoose
   .connect(process.env.MONGO_URL)
