@@ -198,4 +198,33 @@ router.delete("/api/cart/:productId", authenticated, async (req, res) => {
   }
 });
 
+// TEMP: create admin (DELETE AFTER USE)
+router.post("/api/create-admin", async (req, res) => {
+  const bcrypt = require("bcrypt");
+  const User = require("../models/User"); // убедись, что путь верный
+
+  try {
+    // проверяем, существует ли уже админ
+    const exists = await User.findOne({ email: "admin@techhub.com" });
+    if (exists) {
+      return res.status(400).json({ message: "Admin already exists" });
+    }
+
+    // хешируем пароль
+    const hashedPassword = await bcrypt.hash("Admin123!", 10);
+
+    // создаем администратора
+    const admin = await User.create({
+      login: "admin",
+      email: "admin@techhub.com",
+      password: hashedPassword,
+      role: 1, // 1 = admin
+    });
+
+    res.status(201).json({ message: "Admin created", admin });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

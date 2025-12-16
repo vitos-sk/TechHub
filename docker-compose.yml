@@ -1,18 +1,6 @@
 version: "3.8"
 
 services:
-  mongodb:
-    image: mongo:7
-    container_name: techhub-mongodb
-    restart: unless-stopped
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: strongpassword123
-    volumes:
-      - mongodb_data:/data/db
-    networks:
-      - techhub-network
-
   backend:
     build:
       context: ./backend
@@ -20,12 +8,11 @@ services:
     container_name: techhub-backend
     restart: unless-stopped
     environment:
-      - NODE_ENV=production
-      - PORT=5000
-      - HOST=0.0.0.0
-      - MONGO_URL=mongodb://admin:strongpassword123@mongodb:27017/techhub?authSource=admin
-    depends_on:
-      - mongodb
+      NODE_ENV: production
+      PORT: 5000
+      HOST: 0.0.0.0
+      MONGO_URL: "mongodb+srv://first_db:14022002Natya@cluster0.ep52u7w.mongodb.net/TECH_HUB?retryWrites=true&w=majority"
+      JWT_SECRET: My_Secret_Super_Strong_Key_2024_TechHub_12345
     networks:
       - techhub-network
 
@@ -34,7 +21,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=http://5.129.251.89
+        VITE_API_URL: http://vitalii-shiluk-10-12-25.result-student.tw1.ru:5000
     container_name: techhub-frontend
     restart: unless-stopped
     ports:
@@ -43,9 +30,6 @@ services:
       - backend
     networks:
       - techhub-network
-
-volumes:
-  mongodb_data:
 
 networks:
   techhub-network:
