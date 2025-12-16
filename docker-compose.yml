@@ -20,8 +20,6 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      args:
-        VITE_API_URL: http://vitalii-shiluk-10-12-25.result-student.tw1.ru:5000
     container_name: techhub-frontend
     restart: unless-stopped
     ports:

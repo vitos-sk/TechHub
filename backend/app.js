@@ -35,7 +35,7 @@ app.use(
 );
 
 app.use(express.json());
-app.use(express.urlencater({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(require("./routes/index"));
 
