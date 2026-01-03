@@ -23,12 +23,8 @@ const authSchema = yup.object({
   email: yup
     .string()
     .required("Email is required")
-    .matches(
-      /^[A-Za-z0-9@._-]+$/,
-      "Email should contain only latin letters, numbers and symbols . _ - @"
-    )
-    .min(6, "Email should be at least 6 characters long")
-    .max(32, "Email should be at most 32 characters long"),
+    .email("Invalid email format")
+    .max(255, "Email should be at most 255 characters long"),
   password: yup
     .string()
     .required("Password is required")
@@ -65,19 +61,19 @@ const RegistrationContainer = ({ className }) => {
 
   const onSubmit = async ({ login, email, password }) => {
     try {
-      request("/register", "POST", {
+      const { error, user } = await request("/register", "POST", {
         login,
         email,
         password,
-      }).then(({ error, user }) => {
-        if (error) {
-          return setServerError(error);
-        }
-
-        dispatch(setUser(user));
-        localStorage.setItem("userData", JSON.stringify(user));
-        navigate("/");
       });
+
+      if (error) {
+        return setServerError(error);
+      }
+
+      dispatch(setUser(user));
+      localStorage.setItem("userData", JSON.stringify(user));
+      navigate("/");
     } catch (err) {
       setServerError(err.message || "Registration failed");
     }

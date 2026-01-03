@@ -42,7 +42,7 @@ const AdminPanelContainer = ({ className }) => {
       setShouldSearch(value);
       setPage(1);
     }, 500),
-    []
+    [setShouldSearch, setPage]
   );
 
   const onChange = (e) => {

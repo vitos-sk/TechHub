@@ -30,28 +30,60 @@ router.get("/api/", (req, res) => {
 
 router.post("/api/register", async (req, res) => {
   try {
-    const { user, token } = await register(
-      req.body.login,
-      req.body.email,
-      req.body.password
-    );
+    const { login, email, password } = req.body;
+
+    if (!login || !email || !password) {
+      return res.status(400).send({ error: "Login, email and password are required" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).send({ error: "Invalid email format" });
+    }
+
+    if (login.length < 5 || login.length > 32) {
+      return res.status(400).send({ error: "Login must be between 5 and 32 characters" });
+    }
+
+    if (password.length < 6 || password.length > 32) {
+      return res
+        .status(400)
+        .send({ error: "Password must be between 6 and 32 characters" });
+    }
+
+    const { user, token } = await register(login, email, password);
     res
       .cookie("token", token, { httpOnly: true })
+      .status(200)
       .send({ error: null, user: mapUser(user) });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(400).send({ error: error.message || "Unknown error" });
   }
 });
 
 router.post("/api/login", async (req, res) => {
   try {
-    const { user, token } = await login(req.body.email, req.body.password);
-    res.cookie("token", token, { httpOnly: true }).send({
-      error: null,
-      user: mapUser(user),
-    });
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).send({ error: "Email and password are required" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).send({ error: "Invalid email format" });
+    }
+
+    const { user, token } = await login(email, password);
+    res
+      .cookie("token", token, { httpOnly: true })
+      .status(200)
+      .send({
+        error: null,
+        user: mapUser(user),
+      });
   } catch (error) {
-    res.send({
+    res.status(401).send({
       error: error.message || "Unknown error",
     });
   }
@@ -59,18 +91,18 @@ router.post("/api/login", async (req, res) => {
 
 router.post("/api/logout", async (req, res) => {
   try {
-    res.cookie("token", "", { httpOnly: true }).send({ error: null });
+    res.cookie("token", "", { httpOnly: true }).status(200).send({ error: null });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(500).send({ error: error.message || "Unknown error" });
   }
 });
 
 router.get("/api/users", authenticated, hasRole([ROLES.ADMIN]), async (req, res) => {
   try {
     const users = await getUsers();
-    res.send({ error: null, data: users.map(mapUser) });
+    res.status(200).send({ error: null, data: users.map(mapUser) });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(500).send({ error: error.message || "Unknown error" });
   }
 });
 
@@ -81,7 +113,7 @@ router.get("/api/products", async (req, res) => {
     const productsData = await getProducts(search, page, limit, category);
     const mappedProducts = productsData.products.map(mapProduct);
 
-    res.send({
+    res.status(200).send({
       error: null,
       data: {
         products: mappedProducts,
@@ -91,28 +123,42 @@ router.get("/api/products", async (req, res) => {
       },
     });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(500).send({ error: error.message || "Unknown error" });
   }
 });
 
 router.get("/api/products/:id", async (req, res) => {
   try {
     const product = await getProduct(req.params.id);
-    res.send({ error: null, data: mapProduct(product) });
+    if (!product) {
+      return res.status(404).send({ error: "Product not found" });
+    }
+    res.status(200).send({ error: null, data: mapProduct(product) });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(500).send({ error: error.message || "Unknown error" });
   }
 });
 
 router.post("/api/products", authenticated, hasRole([ROLES.ADMIN]), async (req, res) => {
   try {
-    const product = await addProduct(req.body);
+    const { name, price, description, image, category_id } = req.body;
 
+    if (!name || !price || !description || !category_id) {
+      return res
+        .status(400)
+        .send({ error: "Name, price, description and category_id are required" });
+    }
+
+    if (typeof price !== "number" || price <= 0) {
+      return res.status(400).send({ error: "Price must be a positive number" });
+    }
+
+    const product = await addProduct(req.body);
     const mappedProduct = mapProduct(product);
 
-    res.send({ error: null, data: mappedProduct });
+    res.status(201).send({ error: null, data: mappedProduct });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(400).send({ error: error.message || "Unknown error" });
   }
 });
 
@@ -122,11 +168,21 @@ router.patch(
   hasRole([ROLES.ADMIN]),
   async (req, res) => {
     try {
+      const { price } = req.body;
+
+      if (price !== undefined && (typeof price !== "number" || price <= 0)) {
+        return res.status(400).send({ error: "Price must be a positive number" });
+      }
+
       const updatedProduct = await editProduct(req.params.id, req.body);
 
-      res.send({ error: null, data: mapProduct(updatedProduct) });
+      if (!updatedProduct) {
+        return res.status(404).send({ error: "Product not found" });
+      }
+
+      res.status(200).send({ error: null, data: mapProduct(updatedProduct) });
     } catch (error) {
-      res.send({ error: error.message || "Unknown Error" });
+      res.status(400).send({ error: error.message || "Unknown Error" });
     }
   }
 );
@@ -137,10 +193,13 @@ router.delete(
   hasRole([ROLES.ADMIN]),
   async (req, res) => {
     try {
-      await deleteProduct(req.params.id);
-      res.send({ error: null });
+      const deletedProduct = await deleteProduct(req.params.id);
+      if (!deletedProduct) {
+        return res.status(404).send({ error: "Product not found" });
+      }
+      res.status(200).send({ error: null });
     } catch (error) {
-      res.send({ error: error.message || "Unknown error" });
+      res.status(500).send({ error: error.message || "Unknown error" });
     }
   }
 );
@@ -148,9 +207,9 @@ router.delete(
 router.get("/api/categories", async (req, res) => {
   try {
     const categories = await getCategories();
-    res.send({ error: null, data: categories.map(mapCategory) });
+    res.status(200).send({ error: null, data: categories.map(mapCategory) });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(500).send({ error: error.message || "Unknown error" });
   }
 });
 
@@ -160,29 +219,45 @@ router.post(
   hasRole([ROLES.ADMIN]),
   async (req, res) => {
     try {
+      const { name, description } = req.body;
+
+      if (!name) {
+        return res.status(400).send({ error: "Category name is required" });
+      }
+
       const category = await addCategiry(req.body);
-      res.send({ error: null, data: mapCategory(category) });
+      res.status(201).send({ error: null, data: mapCategory(category) });
     } catch (error) {
-      res.send({ error: error.message || "Unknown error" });
+      res.status(400).send({ error: error.message || "Unknown error" });
     }
   }
 );
 
 router.post("/api/cart", authenticated, async (req, res) => {
   try {
+    const { product_id, quantity } = req.body;
+
+    if (!product_id) {
+      return res.status(400).send({ error: "Product ID is required" });
+    }
+
+    if (quantity !== undefined && (typeof quantity !== "number" || quantity < 0)) {
+      return res.status(400).send({ error: "Quantity must be a non-negative number" });
+    }
+
     const cart = await addToCart(req.user.id, req.body);
-    res.send({ error: null, data: mapCart(cart) });
+    res.status(200).send({ error: null, data: mapCart(cart) });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(400).send({ error: error.message || "Unknown error" });
   }
 });
 
 router.get("/api/cart", authenticated, async (req, res) => {
   try {
     const cart = await getCart(req.user.id);
-    res.send({ error: null, data: mapCart(cart) });
+    res.status(200).send({ error: null, data: mapCart(cart) });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(500).send({ error: error.message || "Unknown error" });
   }
 });
 
@@ -192,33 +267,29 @@ router.delete("/api/cart/:productId", authenticated, async (req, res) => {
 
     const cart = await removeFromCart(req.user.id, productId);
 
-    res.send({ error: null, data: mapCart(cart) });
+    res.status(200).send({ error: null, data: mapCart(cart) });
   } catch (error) {
-    res.send({ error: error.message || "Unknown error" });
+    res.status(400).send({ error: error.message || "Unknown error" });
   }
 });
 
-// TEMP: create admin (DELETE AFTER USE)
 router.post("/api/create-admin", async (req, res) => {
   const bcrypt = require("bcrypt");
-  const User = require("../models/User"); // убедись, что путь верный
+  const User = require("../models/User");
 
   try {
-    // проверяем, существует ли уже админ
     const exists = await User.findOne({ email: "admin@techhub.com" });
     if (exists) {
       return res.status(400).json({ message: "Admin already exists" });
     }
 
-    // хешируем пароль
     const hashedPassword = await bcrypt.hash("Admin123!", 10);
 
-    // создаем администратора
     const admin = await User.create({
       login: "admin",
       email: "admin@techhub.com",
       password: hashedPassword,
-      role: 1, // 1 = admin
+      role: 1,
     });
 
     res.status(201).json({ message: "Admin created", admin });

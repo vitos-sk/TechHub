@@ -1,16 +1,18 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
-const ModalContainer = ({ className, children }) => {
+const ModalContainer = ({ className, children, show, onClose }) => {
+  if (!show) return null;
+
   return (
-    <div className={className}>
-      <div className='overlay'>
-        <div className='box'>
+    <div className={className} onClick={onClose}>
+      <div className="overlay">
+        <div className="box" onClick={(e) => e.stopPropagation()}>
           <div>{children}</div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export const Modal = styled(ModalContainer)`
   position: fixed;
@@ -41,4 +43,4 @@ export const Modal = styled(ModalContainer)`
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
-`
+`;

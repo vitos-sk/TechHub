@@ -1,13 +1,17 @@
-import { ACTION_TYPE } from '../actions/action-type'
-const inititalState = {
-  isLogout: false,
-}
+import { ACTION_TYPE } from "../actions/action-type";
 
-export const appReducer = (state = inititalState, action) => {
+const initialState = {
+  isLogout: false,
+};
+
+export const appReducer = (state = initialState, action) => {
   switch (action.type) {
-    case '':
-      return {}
+    case ACTION_TYPE.LOGOUT:
+      return {
+        ...state,
+        isLogout: true,
+      };
     default:
-      return state
+      return state;
   }
-}
+};

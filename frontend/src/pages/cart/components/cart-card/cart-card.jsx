@@ -1,7 +1,9 @@
 import styled from "styled-components";
-import { Button } from "../../../../ui-components";
+import { Button, Modal } from "../../../../ui-components";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { request } from "../../../../utils";
+import { loadCartAsync } from "../../../../actions";
 
 const CartCardContainer = ({
   className,
@@ -12,18 +14,22 @@ const CartCardContainer = ({
   quantity,
   onUpdate,
 }) => {
+  const dispatch = useDispatch();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleUpdate = async (newQuantity) => {
     if (newQuantity < 0) return;
 
     try {
+      setIsUpdating(true);
       if (newQuantity === 0) {
         const res = await request(`/cart/${id}`, "DELETE");
 
-        if (!res.error && onUpdate) {
+        if (!res.error) {
           setIsDeleting(false);
-          onUpdate();
+          await dispatch(loadCartAsync());
+          if (onUpdate) onUpdate();
         } else {
           console.error("Ошибка от сервера:", res.error);
         }
@@ -32,10 +38,17 @@ const CartCardContainer = ({
           product_id: id,
           quantity: newQuantity,
         });
-        if (!res.error && onUpdate) onUpdate();
+        if (!res.error) {
+          await dispatch(loadCartAsync());
+          if (onUpdate) onUpdate();
+        } else {
+          console.error("Ошибка от сервера:", res.error);
+        }
       }
     } catch (error) {
       console.error("Ошибка обновления:", error);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -68,19 +81,16 @@ const CartCardContainer = ({
           </div>
         </div>
       </div>
-      {isDeleting && (
-        <Modal onClose={() => setIsDeleting(false)}>
-          <div className="modal-content">
-            <h2>Are you sure?</h2>
-
-            <p>Remove this item from the cart?</p>
-            <div className="modal-buttons">
-              <Button onClick={() => handleUpdate(0)}>Delete</Button>
-              <Button onClick={() => setIsDeleting(false)}>Cancel</Button>
-            </div>
+      <Modal show={isDeleting} onClose={() => setIsDeleting(false)}>
+        <div className="modal-content">
+          <h2>Are you sure?</h2>
+          <p>Remove this item from the cart?</p>
+          <div className="modal-buttons">
+            <Button onClick={() => handleUpdate(0)}>Delete</Button>
+            <Button onClick={() => setIsDeleting(false)}>Cancel</Button>
           </div>
-        </Modal>
-      )}
+        </div>
+      </Modal>
     </div>
   );
 };
@@ -191,33 +201,14 @@ export const CartCard = styled(CartCardContainer)`
     gap: 15px;
     padding: 3px 0 0 0;
   }
-`;
-
-const Modal = styled.div`
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: inherit;
 
   .modal-content {
-    position: relative;
     color: #f9f9f9;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    z-index: 21;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    width: 100%;
-    max-width: 400px;
   }
 
   .modal-buttons {

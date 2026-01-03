@@ -16,12 +16,16 @@ const ProductContainer = ({ className }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!id) return;
-    dispatch(loadProductAsync(id)).then((data) => {
-      if (data?.error) {
-        setError(data.error);
+    const loadProduct = async () => {
+      if (!id) return;
+      const result = await dispatch(loadProductAsync(id));
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        setError(null);
       }
-    });
+    };
+    loadProduct();
   }, [id, dispatch]);
 
   return (

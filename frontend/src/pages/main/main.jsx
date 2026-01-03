@@ -10,33 +10,42 @@ import { useEffect, useState, useCallback } from "react";
 import { Notification } from "../../ui-components";
 import { PAGINATION } from "../../bff/constans";
 import { debounce } from "../utils";
-import { request } from "../../utils";
 import { Button } from "../../ui-components";
+import { useDispatch, useSelector } from "react-redux";
+import { loadProductsAsync } from "../../actions";
+import {
+  productsSelect,
+  categoriesSelect,
+  productPaginationSelect,
+} from "../../selectors";
 
 const MainContainer = ({ className }) => {
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+  const products = useSelector(productsSelect);
+  const categories = useSelector(categoriesSelect);
+  const pagination = useSelector(productPaginationSelect);
+
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [serchPhrase, setSearchPhrase] = useState("");
   const [shouldSearch, setShouldSearch] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const url = `/products?page=${page}&limit=${PAGINATION.LIMIT}&search=${shouldSearch}&category=${selectedCategory}`;
-
-    request(url).then((response) => {
-      const newCategories = response.data.categories || [];
-      const newProducts = response.data.products || [];
-      const totalCount = response.data.totalCount || 0;
-
-      setCategories(newCategories);
-      setProducts(newProducts);
-      setTotalPages(Math.ceil(totalCount / PAGINATION.LIMIT));
-    });
-  }, [page, selectedCategory, shouldSearch]);
+    const loadProducts = async () => {
+      const result = await dispatch(
+        loadProductsAsync(page, PAGINATION.LIMIT, shouldSearch, selectedCategory)
+      );
+      if (result?.error) {
+        setError(result.error);
+      } else {
+        setError(null);
+      }
+    };
+    loadProducts();
+  }, [page, selectedCategory, shouldSearch, dispatch]);
 
   const currentCategoryName =
     selectedCategory === "all"
@@ -49,7 +58,7 @@ const MainContainer = ({ className }) => {
       setShouldSearch(value);
       setPage(1);
     }, 500),
-    [page]
+    [setShouldSearch, setPage]
   );
 
   const onChange = (e) => {
@@ -80,7 +89,9 @@ const MainContainer = ({ className }) => {
         />
       </div>
 
-      {products.length === 0 ? (
+      {error && <Notification>{error}</Notification>}
+
+      {products.length === 0 && !error ? (
         <Notification>No products</Notification>
       ) : (
         <>
@@ -114,8 +125,12 @@ const MainContainer = ({ className }) => {
             )}
           </div>
           <div className="pagination">
-            {totalPages > 1 && (
-              <Pagination totalPages={totalPages} page={page} setPage={setPage} />
+            {pagination.totalPages > 1 && (
+              <Pagination
+                totalPages={pagination.totalPages}
+                page={page}
+                setPage={setPage}
+              />
             )}
           </div>
         </>

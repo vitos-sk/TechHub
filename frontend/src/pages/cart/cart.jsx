@@ -1,44 +1,44 @@
 import styled from "styled-components";
 import { CartCard } from "./components";
-import { userSelect } from "../../selectors";
+import { userSelect, cartSelect } from "../../selectors";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { considerTotalPrice } from "./utils";
 import { TotalOrder } from "./components";
 import { Notification } from "../../ui-components";
-import { request } from "../../utils";
+import { loadCartAsync } from "../../actions";
 
 const CartContainer = ({ className }) => {
+  const dispatch = useDispatch();
   const { id: userId } = useSelector(userSelect);
-  const [cart, setCart] = useState(null);
+  const cart = useSelector(cartSelect);
   const [isLoading, setIsLoading] = useState(true);
-
-  const fetchCart = async () => {
-    if (!userId) {
-      setIsLoading(false);
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-
-      const response = await request("/cart", "GET");
-
-      if (!response.error) {
-        setCart(response.data);
-      } else {
-        console.error("Ошибка загрузки корзины:", response.error);
-      }
-    } catch (error) {
-      console.error("Ошибка запроса:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    const fetchCart = async () => {
+      if (!userId) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        setError(null);
+        const result = await dispatch(loadCartAsync());
+
+        if (result?.error) {
+          setError(result.error);
+        }
+      } catch (err) {
+        setError(err.message || "Failed to load cart");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     fetchCart();
-  }, [userId]);
+  }, [userId, dispatch]);
 
   const items = cart?.items || [];
   const total = considerTotalPrice(items);
@@ -47,6 +47,14 @@ const CartContainer = ({ className }) => {
     return (
       <div className={className}>
         <Notification>Загрузка...</Notification>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className={className}>
+        <Notification>{error}</Notification>
       </div>
     );
   }
@@ -67,7 +75,7 @@ const CartContainer = ({ className }) => {
                 quantity={item.quantity}
                 id={item.product_id}
                 product_id={item.product_id}
-                onUpdate={fetchCart}
+                onUpdate={() => dispatch(loadCartAsync())}
               />
             ))}
           </div>

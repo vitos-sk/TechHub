@@ -1,15 +1,18 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { userSelect } from "../../../../selectors";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Button } from "../../../../ui-components";
 import { Modal } from "../../../../ui-components";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { request } from "../../../../utils";
+import { loadCartAsync } from "../../../../actions";
 
 const ProductCardContainer = ({ className, name, image_url, price, id }) => {
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const { id: userId } = useSelector(userSelect);
   const navigate = useNavigate();
 
@@ -18,14 +21,26 @@ const ProductCardContainer = ({ className, name, image_url, price, id }) => {
       setShowModal(true);
       return;
     }
-    const product = {
-      product_id: id,
-      price,
-      name,
-      image_url,
-      quantity: 1,
-    };
-    await request("/cart", "POST", product);
+
+    try {
+      setIsAdding(true);
+      const product = {
+        product_id: id,
+        price,
+        name,
+        image_url,
+        quantity: 1,
+      };
+      const response = await request("/cart", "POST", product);
+
+      if (!response.error) {
+        await dispatch(loadCartAsync());
+      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    } finally {
+      setIsAdding(false);
+    }
   };
 
   return (
@@ -45,8 +60,8 @@ const ProductCardContainer = ({ className, name, image_url, price, id }) => {
             </div>
           </Link>
           <div className="card-footer">
-            <Button className="card-button" onClick={addToCart}>
-              Add
+            <Button className="card-button" onClick={addToCart} disabled={isAdding}>
+              {isAdding ? "Adding..." : "Add"}
             </Button>
             <span>${price}</span>
           </div>

@@ -17,15 +17,21 @@ const AddProductContainer = ({ className, product, onSave, onClear }) => {
   const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
-    request("/categories", "GET").then((res) => {
-      if (res.data) {
-        const formattedCategories = res.data.map((cat) => ({
-          ...cat,
-          id: String(cat._id || cat.id),
-        }));
-        setCategories(formattedCategories);
+    const loadCategories = async () => {
+      try {
+        const res = await request("/categories", "GET");
+        if (res.data) {
+          const formattedCategories = res.data.map((cat) => ({
+            ...cat,
+            id: String(cat._id || cat.id),
+          }));
+          setCategories(formattedCategories);
+        }
+      } catch (error) {
+        console.error("Error loading categories:", error);
       }
-    });
+    };
+    loadCategories();
   }, []);
 
   useEffect(() => {
